@@ -6,7 +6,7 @@ using UnityEngine;
 public class Particle_Controller : MonoBehaviour
 {
     public ParticleSystem rain;
-    ParticleSystem.MainModule main;
+    //ParticleSystem.MainModule main;
     public Camera cam;
     public GameObject player;
 
@@ -46,17 +46,21 @@ public class Particle_Controller : MonoBehaviour
         //}
 
         var rainEmRate = rain.emission;
+        var rainSimSpeed = rain.main;
+
+        //The parameters should be put into a function
         switch(intensity)
         {
             case rainIntensity.light:
                 rainEmRate.rateOverTime = 10;
+                rainSimSpeed.simulationSpeed = 1;
                 break;
 
             case rainIntensity.heavy:
                 rainEmRate.rateOverTime = 100;
+                rainSimSpeed.simulationSpeed = 3;
                 break;
         }
 
     }
-
 }
