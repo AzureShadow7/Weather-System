@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RayMarching : MonoBehaviour
 {
+    ComputeShader shader;
+
     float length(Vector2 p)
     {
         return Mathf.Sqrt((p.x * p.x) + (p.y * p.y));

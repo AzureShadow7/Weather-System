@@ -1,0 +1,52 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> Result;
+
+float length(float2 v)
+{
+    return sqrt(v.x * v.x + v.y * v.y);
+}
+
+float signedDistanceToCircle(float2 p, float2 centre, float radius)
+{
+    return length(centre - p) - radius;
+}
+
+float signedDistanceToBox(float2 p, float2 centre, float2 size)
+{
+    float2 offset = abs(p - centre) - size;
+
+    float unsignedDistance = length(max(offset, 0));
+    float distanceInsideBox = max(min(offset, 0));
+    return unsignedDistance + distInsideBox;
+}
+
+float signedDistanceToScene(float2 p)
+{
+    float distanceToScene = maxDistance;
+
+    for (int i = 0; i < numCircles; i++)
+    {
+        float distanceToCircle = signedDistanceToCircle(p, circles[i].centre, circles[i].radius);
+        distanceToScene = min(distanceToCircle, distanceToScene);
+    }
+
+    for (int i = 0; i < numBoxes; i++)
+    {
+        float distanceToBox = signedDistanceToBox(p, boxes[i].centre, boxes[i].size);
+        distanceToScene = min(distanceToBox, distanceToScene);
+    }
+
+    return distanceToScene;
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+
+    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+}
