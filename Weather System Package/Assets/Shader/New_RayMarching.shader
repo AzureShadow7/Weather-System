@@ -1,4 +1,4 @@
-Shader "Unlit/Raymarch"
+Shader "Hidden/New_RayMarching"
 {
     Properties
     {
@@ -6,16 +6,23 @@ Shader "Unlit/Raymarch"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+        // No culling or depth
+        Cull Off ZWrite Off ZTest Always
 
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
 
             #include "UnityCG.cginc"
+
+            sampler2D _MainTex;
+
+            uniform float4 _CamWorldSpace;
+            uniform float4x4 _CamFrustum;
+            uniform float4x4 _CamToWorld;
 
             struct appdata
             {
@@ -26,32 +33,31 @@ Shader "Unlit/Raymarch"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+                float3 ray : TEXCOORD1;
             };
-
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
 
             v2f vert (appdata v)
             {
                 v2f o;
+                half index = v.vertex.z;
+                v.vertex.z = 0;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = v.uv;
+
+                o.ray = _CamFrustum[(int)index].xyz;
+                o.ray /= abs(o.ray.z);
+                o.ray = mul(_CamToWorld, o.ray);
+
                 return o;
             }
 
+
             fixed4 frag(v2f i) : SV_Target
             {
-                float2 uv = i.uv - 0.5;
-                //camera position
-                float origin = float3(0, 0, -3);
-                float direction = normalize(float3(uv.x, uv.y, 1));
-
-                // sample the texture
-                fixed4 col = 0;
-                col.rgb = direction;
-                return col;
+                float3 rayDirection = normalize(i.ray.xyz);
+                float3 rayOrigin = _CamWorldSpace;
+                return fixed4(rayDirection, 1);
             }
             ENDCG
         }
