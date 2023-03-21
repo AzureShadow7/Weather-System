@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &187804594 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4263574373785686, guid: 2b09b46c326721c4cbff7f7621a3ed13,
+    type: 3}
+  m_PrefabInstance: {fileID: 1013311402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &218817988
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,13 +269,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 457400315}
-  m_LocalRotation: {x: -0.680842, y: 0.19093, z: -0.680842, w: -0.19092993}
-  m_LocalPosition: {x: 0.2839205, y: -0.025681406, z: 0.0064432137}
-  m_LocalScale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+  m_LocalRotation: {x: -0.46113664, y: 0.5360532, z: 0.46113667, w: 0.5360532}
+  m_LocalPosition: {x: 0.86, y: -0.35, z: 0.1079998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1709628590}
-  m_RootOrder: 1
+  m_Father: {fileID: 187804594}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!73398921 &457400317
 VFXRenderer:
@@ -327,7 +333,16 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 1.5
+        m_Name: Size
+        m_Overridden: 1
+      - m_Value: 15
+        m_Name: Lifetime
+        m_Overridden: 1
+      - m_Value: 50
+        m_Name: Rate
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -447,7 +462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4062507223760156, guid: 2b09b46c326721c4cbff7f7621a3ed13, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.76
+      value: -9.02
       objectReference: {fileID: 0}
     - target: {fileID: 4062507223760156, guid: 2b09b46c326721c4cbff7f7621a3ed13, type: 3}
       propertyPath: m_LocalRotation.w
@@ -520,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -548,7 +563,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440448622}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1440448625
 Camera:
   m_ObjectHideFlags: 0
@@ -576,7 +591,7 @@ Camera:
   far clip plane: 10
   field of view: 60
   orthographic: 1
-  orthographic size: 11
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -599,20 +614,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440448622}
-  m_LocalRotation: {x: 0, y: 0.66000164, z: -0.75126415, w: 0}
-  m_LocalPosition: {x: -0.63, y: 9.05, z: -0.22}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
+  m_LocalPosition: {x: 0, y: 9.05, z: -0.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 97.4, y: 180, z: 0}
---- !u!4 &1709628590 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4121258057090102, guid: 2b09b46c326721c4cbff7f7621a3ed13,
-    type: 3}
-  m_PrefabInstance: {fileID: 1013311402}
-  m_PrefabAsset: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!1 &1775410514
 GameObject:
   m_ObjectHideFlags: 0
