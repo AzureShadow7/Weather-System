@@ -49,10 +49,10 @@ Shader "Unlit/CubeShader"
             float4 _MainTex_ST;*/
 
             float distance(float3 p, float3 _Centre) {
-                float sum = 0.;
-                    /*(p.x - _Centre.x) * (p.x - _Centre.x) +
-                    (p.y - _Centre.y) * (p.y - _Centre.y) +
-                    (p.z - _Centre.z) * (p.z - _Centre.z);*/
+                float sum = 
+                    (p.x - _Centre.x) * (p.x + _Centre.x) +
+                    (p.y - _Centre.y) * (p.y + _Centre.y) +
+                    (p.z - _Centre.z) * (p.z + _Centre.z);
                 //sum = sqrt(sum);
                 return sum;
             }
@@ -67,17 +67,72 @@ Shader "Unlit/CubeShader"
                 return distance(p, _Centre) < _Radius;
             }
 
-            fixed4 raymarch(float3 position, float3 direction)
+            float DensityFunction(float sdf)
             {
-                //int STEPS = 100;
-                for (int i = 0; i < STEPS; i++)
-                {
-                    if (sphereHit(position))
-                        return fixed4(1., 0., 1., 1.); // Pink
+                return max(-sdf, 0);
+            }
 
-                    position += direction * STEP_SIZE;
-                }
-                return fixed4(1., 0., 0., 1.); // Red
+            //fixed4 raymarch(float3 position, float3 direction)
+            //{
+            //    //int STEPS = 100;
+            //    for (int i = 0; i < STEPS; i++)
+            //    {
+            //        if (sphereHit(position))
+            //            return fixed4(0., 1., 0., 1.); // Green
+
+            //        position += direction * STEP_SIZE;
+            //    }
+            //    return fixed4(1., 0., 0., 1.); // Red
+            //}
+
+            float4 Raymarch(float3 rayStart, float3 rayDir)
+            {
+                // Scattering in RGB, transmission in A
+                float4 intScattTrans = float4(0, 0, 0, 1);
+
+                // Current distance along ray
+                float t = 0;
+
+                UNITY_LOOP
+                    for (int i = 0; i < STEPS; i++)
+
+                    {
+                        // Current ray position
+                        float3 rayPos = rayStart + rayDir * t;
+
+                        // Evaluate our signed distance field at the current ray position
+                        float sdf = sphereDistance(rayPos);
+
+                        // Only evaluate the cloud color if we're inside the volume
+                        if (sdf < 0)
+
+                        {
+                            half extinction = DensityFunction(sdf);
+                            half transmittance = exp(-extinction * STEP_SIZE);
+
+                            // Get the luminance for the current ray position
+                            half3 luminance = Luminance(rayPos);
+
+                            // Integrate scattering
+                            half3 integScatt = luminance - luminance * transmittance;
+                            intScattTrans.rgb += integScatt * intScattTrans.a;
+                            intScattTrans.a *= transmittance;
+
+                            // Opaque check
+                            if (intScattTrans.a < 0.003)
+
+                            {
+                                intScattTrans.a = 0.0;
+                                break;
+                            }
+                        }
+
+                        // March forward; step size depends on if we're inside the volume or not
+                        t += sdf < 0 ? STEP_SIZE : max(sdf, STEP_SIZE);
+
+                    }
+
+                return float4(intScattTrans.rgb, 1 - intScattTrans.a);
             }
 
             v2f vert(appdata_full v)
@@ -93,7 +148,9 @@ Shader "Unlit/CubeShader"
 
                 float3 worldPosition = i.wPos;
                 float3 viewDirection = normalize(i.wPos - _WorldSpaceCameraPos);
-                return  raymarch(worldPosition, viewDirection);
+
+                return  Raymarch(worldPosition, viewDirection);
+                //I need to create a ray start from the camera's position and a ray direction to slot into the raymarching function
             }
             ENDCG
         }
