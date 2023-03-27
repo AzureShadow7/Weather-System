@@ -26,7 +26,7 @@ Shader "Unlit/CubeShader"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #define STEPS 1000
+            #define STEPS 100
             #define STEP_SIZE 0.01
 
             float3 _Centre = float3(0.,0.,0.);
@@ -42,11 +42,13 @@ Shader "Unlit/CubeShader"
             struct v2f 
             {
                 float4 pos : SV_POSITION;    // Clip space
-                float3 wPos : TEXCOORD1;    // World position
+                //float3 wPos : TEXCOORD1;    // World position
+                float2 uv : TEXCOORD0;
+                float3 viewVector : TEXCOORD1;
             };
 
-            /*sampler2D _MainTex;
-            float4 _MainTex_ST;*/
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
 
             float distance(float3 p, float3 _Centre) {
                 float sum = 
@@ -135,22 +137,41 @@ Shader "Unlit/CubeShader"
                 return float4(intScattTrans.rgb, 1 - intScattTrans.a);
             }
 
-            v2f vert(appdata_full v)
+            v2f vert(appdata v)
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.wPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                //uvs *= 2; //multiplication -> tiling
+                //uvs.x += 0.5; //addition -> offset
+
+                //o.wPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+
+                float3 viewVector = mul(unity_CameraInvProjection, float4(v.uv * 2 - 1, 0, -1));
+                o.viewVector = mul(unity_CameraToWorld, float4(viewVector, 0));
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
+                //PREVIOUS CODE
+                //float3 worldPosition = i.wPos;
+                //float3 viewDirection = normalize(i.wPos - _WorldSpaceCameraPos);
 
-                float3 worldPosition = i.wPos;
-                float3 viewDirection = normalize(i.wPos - _WorldSpaceCameraPos);
+                //CREATING RAYS
+                float3 rayPos = _WorldSpaceCameraPos;
+                float viewLength = length(i.viewVector);
+                float3 rayDir = i.viewVector / viewLength;
 
-                return  Raymarch(worldPosition, viewDirection);
-                //I need to create a ray start from the camera's position and a ray direction to slot into the raymarching function
+                //SAMPLING A TEXTURE
+                float2 uvs = i.uv;
+                
+                //return fixed4(uvs, 0, 1);
+                fixed4 textureColour = tex2D(_MainTex, uvs);
+
+                return Raymarch(rayPos, rayDir);
+                //return textureColour;
+                //return  Raymarch(worldPosition, viewDirection);
             }
             ENDCG
         }
