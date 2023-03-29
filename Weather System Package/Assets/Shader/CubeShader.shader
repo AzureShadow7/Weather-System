@@ -55,7 +55,7 @@ Shader "Unlit/CubeShader"
                     (p.x - _Centre.x) * (p.x + _Centre.x) +
                     (p.y - _Centre.y) * (p.y + _Centre.y) +
                     (p.z - _Centre.z) * (p.z + _Centre.z);
-                //sum = sqrt(sum);
+                sum = sqrt(sum);
                 return sum;
             }
 
