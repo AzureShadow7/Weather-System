@@ -5,23 +5,29 @@ using UnityEngine;
 [RequireComponent(typeof(ParticleSystem))]
 public class Particle_Controller : MonoBehaviour
 {
-    public ParticleSystem rain;
+    private ParticleSystem weatherParticle;
     //ParticleSystem.MainModule main;
     public Camera cam;
     public GameObject player;
 
-    public enum rainIntensity
+    public enum weatherParticleIntensity
     {
         light,
         heavy
     }
 
-    public rainIntensity intensity;
+    public enum weatherType
+    {
+        rain,
+        snow
+    }
+
+    public weatherParticleIntensity intensity;
 
     // Start is called before the first frame update
     void Start()
     {
-        rain = GetComponent<ParticleSystem>();
+        weatherParticle = GetComponent<ParticleSystem>();
     }
 
     //Update is called once per frame
@@ -45,20 +51,20 @@ public class Particle_Controller : MonoBehaviour
         //    Debug.Log("Distance is: " + camToPlayerDist);
         //}
 
-        var rainEmRate = rain.emission;
-        var rainSimSpeed = rain.main;
+        var weatherParticleEmRate = weatherParticle.emission;
+        var weatherParticleSimSpeed = weatherParticle.main;
 
         //The parameters should be put into a function
         switch(intensity)
         {
-            case rainIntensity.light:
-                rainEmRate.rateOverTime = 10;
-                rainSimSpeed.simulationSpeed = 1;
+            case weatherParticleIntensity.light:
+                weatherParticleEmRate.rateOverTime = 10;
+                weatherParticleSimSpeed.simulationSpeed = 1;
                 break;
 
-            case rainIntensity.heavy:
-                rainEmRate.rateOverTime = 100;
-                rainSimSpeed.simulationSpeed = 3;
+            case weatherParticleIntensity.heavy:
+                weatherParticleEmRate.rateOverTime = 100;
+                weatherParticleSimSpeed.simulationSpeed = 3;
                 break;
         }
 
