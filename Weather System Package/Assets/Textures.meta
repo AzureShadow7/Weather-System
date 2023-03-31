@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: e1f484bfe91c929408eefd5a3f8254a0
-=======
-guid: 3855356651d4f3449bbadfed2921abd9
->>>>>>> Ray-Marching-Clouds
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

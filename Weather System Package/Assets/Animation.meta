@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Weather System Package/Assets/Animation.meta
 guid: 6672debd8112def429c6faaeadf9bf55
-========
-guid: adf76af329e20714c89dad6c5576b1d0
->>>>>>>> Ray-Marching-Clouds:Weather System Package/Assets/Shader.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

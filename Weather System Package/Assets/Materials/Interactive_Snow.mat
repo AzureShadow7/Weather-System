@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<<< HEAD:Weather System Package/Assets/Materials/Interactive_Snow.mat
-========
---- !u!114 &-2084065098708242479
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
->>>>>>>> Ray-Marching-Clouds:Weather System Package/Assets/Materials/CubeMaterial.mat
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -23,14 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<<< HEAD:Weather System Package/Assets/Materials/Interactive_Snow.mat
   m_Name: Interactive_Snow
   m_Shader: {fileID: -6465566751694194690, guid: c080e9f4de8ae4a44acf57ceecb65c2c,
     type: 3}
-========
-  m_Name: CubeMaterial
-  m_Shader: {fileID: 4800000, guid: 0c20c8e6161e9a249b474d507748e2b6, type: 3}
->>>>>>>> Ray-Marching-Clouds:Weather System Package/Assets/Materials/CubeMaterial.mat
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -67,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0af01d3ea59822147838a4b1e8f5e30e, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -119,17 +98,11 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-<<<<<<<< HEAD:Weather System Package/Assets/Materials/Interactive_Snow.mat
     - _Noise_Intensity: -0.07
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
-========
-    - _OcclusionStrength: 1
-    - _Parallax: 0.005
->>>>>>>> Ray-Marching-Clouds:Weather System Package/Assets/Materials/CubeMaterial.mat
     - _QueueOffset: 0
-    - _Radius: 12.3
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -144,15 +117,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CameraPos: {r: 0, g: 0, b: 0, a: 1}
-    - _Centre: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-<<<<<<<< HEAD:Weather System Package/Assets/Materials/Interactive_Snow.mat
     - _Snow_Colour: {r: 0.82352936, g: 0.82352936, b: 0.82352936, a: 0}
-========
-    - _RayDir: {r: 0, g: 0, b: 5, a: 1}
->>>>>>>> Ray-Marching-Clouds:Weather System Package/Assets/Materials/CubeMaterial.mat
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5043023118643286500
