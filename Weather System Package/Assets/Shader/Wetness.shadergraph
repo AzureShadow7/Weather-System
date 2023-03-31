@@ -1873,8 +1873,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -8163.0,
-            "y": -1038.0001220703125,
+            "x": -8544.0,
+            "y": -1038.0,
             "width": 120.0,
             "height": 149.0
         }
@@ -5463,10 +5463,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -8486.0,
-            "y": -1038.0001220703125,
+            "x": -8867.0,
+            "y": -1038.0,
             "width": 208.0,
-            "height": 315.0001220703125
+            "height": 314.99993896484377
         }
     },
     "m_Slots": [
@@ -5770,9 +5770,9 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "ba0724088b874fd4b10ad9ebcd46b88e",
-    "m_Title": "New Group",
+    "m_Title": "Wetness",
     "m_Position": {
-        "x": -8511.0,
+        "x": -8892.0,
         "y": -1097.0
     }
 }
@@ -5898,10 +5898,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -7558.0,
-            "y": -990.0001831054688,
+            "x": -7799.0,
+            "y": -1014.0,
             "width": 208.0,
-            "height": 302.00018310546877
+            "height": 302.0
         }
     },
     "m_Slots": [
@@ -6207,10 +6207,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -7880.0,
-            "y": -1038.0001220703125,
+            "x": -8261.0,
+            "y": -1038.0,
             "width": 208.0,
-            "height": 350.0001220703125
+            "height": 350.0
         }
     },
     "m_Slots": [
