@@ -34,7 +34,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Metallic:
-        m_Texture: {fileID: 2800000, guid: 078562b502e81a74c8fd2612773ebee2, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
@@ -56,12 +56,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _Flow_Speed: 0.1
-    - _Occlusion_Strength: 1
+    - _Occlusion_Strength: 1.52
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 3.78
-    - _Wetness: 1.59
-    - _WetnessDarkness: 0.53
+    - _Smoothness: 4.04
+    - _Wetness: 2.09
+    - _WetnessDarkness: 0.73
+    - _Wetness_Volume: 0.28
     m_Colors:
     - _BaseColour: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0}
     - _Emission_Colour: {r: 0, g: 0, b: 0, a: 0.40392157}

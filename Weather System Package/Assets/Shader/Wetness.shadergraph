@@ -35,6 +35,9 @@
         },
         {
             "m_Id": "3c14de0f85e64fea89f4b5cc48a184f4"
+        },
+        {
+            "m_Id": "1720025c3fb04a3f83e0467388a901e5"
         }
     ],
     "m_Keywords": [],
@@ -221,6 +224,9 @@
         },
         {
             "m_Id": "ca558928ffaa4accbd4f88f57bbbcbf6"
+        },
+        {
+            "m_Id": "90b38f799793425f8bb5b45b608336fe"
         }
     ],
     "m_GroupDatas": [
@@ -680,6 +686,20 @@
                     "m_Id": "9594c0dc5a3e44e2846d562f7f63ebda"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "90b38f799793425f8bb5b45b608336fe"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "bddcc65157914d14874af227eba0a20a"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -1595,6 +1615,33 @@
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "1720025c3fb04a3f83e0467388a901e5",
+    "m_Guid": {
+        "m_GuidSerialized": "b93ac0b9-e99e-4e36-8703-8cf40dcf2c88"
+    },
+    "m_Name": "Wetness Volume",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Wetness Volume",
+    "m_DefaultReferenceName": "_Wetness_Volume",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 1.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
@@ -4644,6 +4691,41 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "90b38f799793425f8bb5b45b608336fe",
+    "m_Group": {
+        "m_Id": "ba0724088b874fd4b10ad9ebcd46b88e"
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -8027.00048828125,
+            "y": -824.0000610351563,
+            "width": 163.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "e55efd4d92f44b309e79694aeb5bd4a4"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "1720025c3fb04a3f83e0467388a901e5"
+    }
+}
+
+{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
     "m_ObjectId": "90df5dfbb7184c4aa0427a0daf96de02",
@@ -5018,7 +5100,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Scale",
     "m_StageCapability": 3,
-    "m_Value": 5.0,
+    "m_Value": 2.0,
     "m_DefaultValue": 500.0,
     "m_Labels": []
 }
@@ -6797,6 +6879,9 @@
         },
         {
             "m_Id": "3c14de0f85e64fea89f4b5cc48a184f4"
+        },
+        {
+            "m_Id": "1720025c3fb04a3f83e0467388a901e5"
         }
     ]
 }
@@ -6915,6 +7000,21 @@
         "m_Guid": ""
     },
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "e55efd4d92f44b309e79694aeb5bd4a4",
+    "m_Id": 0,
+    "m_DisplayName": "Wetness Volume",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
