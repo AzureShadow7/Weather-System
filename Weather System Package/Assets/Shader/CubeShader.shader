@@ -87,55 +87,68 @@ Shader "Unlit/CubeShader"
             //    return fixed4(1., 0., 0., 1.); // Red
             //}
 
-            float4 Raymarch(float3 rayStart, float3 rayDir)
+            bool raycastHit(float3 position, float3 direction)
             {
-                // Scattering in RGB, transmission in A
-                float4 intScattTrans = float4(0, 0, 0, 1);
+                //int STEPS = 100;
+                for (int i = 0; i < STEPS; i++)
+                {
+                    if (sphereHit(position))
+                        return true; // Green
 
-                // Current distance along ray
-                float t = 0;
-
-                UNITY_LOOP
-                    for (int i = 0; i < STEPS; i++)
-
-                    {
-                        // Current ray position
-                        float3 rayPos = rayStart + rayDir * t;
-
-                        // Evaluate our signed distance field at the current ray position
-                        float sdf = sphereDistance(rayPos);
-
-                        // Only evaluate the cloud color if we're inside the volume
-                        if (sdf < 0)
-
-                        {
-                            half extinction = DensityFunction(sdf);
-                            half transmittance = exp(-extinction * STEP_SIZE);
-
-                            // Get the luminance for the current ray position
-                            half3 luminance = Luminance(rayPos);
-
-                            // Integrate scattering
-                            half3 integScatt = luminance - luminance * transmittance;
-                            intScattTrans.rgb += integScatt * intScattTrans.a;
-                            intScattTrans.a *= transmittance;
-
-                            // Opaque check
-                            if (intScattTrans.a < 0.003)
-
-                            {
-                                intScattTrans.a = 0.0;
-                                break;
-                            }
-                        }
-
-                        // March forward; step size depends on if we're inside the volume or not
-                        t += sdf < 0 ? STEP_SIZE : max(sdf, STEP_SIZE);
-
-                    }
-
-                return float4(intScattTrans.rgb, 1 - intScattTrans.a);
+                    position += direction * STEP_SIZE;
+                }
+                return false; // Red
             }
+
+            //float4 Raymarch(float3 rayStart, float3 rayDir)
+            //{
+            //    // Scattering in RGB, transmission in A
+            //    float4 intScattTrans = float4(0, 0, 0, 1);
+
+            //    // Current distance along ray
+            //    float t = 0;
+
+            //    UNITY_LOOP
+            //        for (int i = 0; i < STEPS; i++)
+
+            //        {
+            //            // Current ray position
+            //            float3 rayPos = rayStart + rayDir * t;
+
+            //            // Evaluate our signed distance field at the current ray position
+            //            float sdf = sphereDistance(rayPos);
+
+            //            // Only evaluate the cloud color if we're inside the volume
+            //            if (sdf < 0)
+
+            //            {
+            //                half extinction = DensityFunction(sdf);
+            //                half transmittance = exp(-extinction * STEP_SIZE);
+
+            //                // Get the luminance for the current ray position
+            //                half3 luminance = Luminance(rayPos);
+
+            //                // Integrate scattering
+            //                half3 integScatt = luminance - luminance * transmittance;
+            //                intScattTrans.rgb += integScatt * intScattTrans.a;
+            //                intScattTrans.a *= transmittance;
+
+            //                // Opaque check
+            //                if (intScattTrans.a < 0.003)
+
+            //                {
+            //                    intScattTrans.a = 0.0;
+            //                    break;
+            //                }
+            //            }
+
+            //            // March forward; step size depends on if we're inside the volume or not
+            //            t += sdf < 0 ? STEP_SIZE : max(sdf, STEP_SIZE);
+
+            //        }
+
+            //    return float4(intScattTrans.rgb, 1 - intScattTrans.a);
+            //}
 
             v2f vert(appdata v)
             {
@@ -155,21 +168,31 @@ Shader "Unlit/CubeShader"
             fixed4 frag(v2f i) : SV_Target
             {
                 //PREVIOUS CODE
-                //float3 worldPosition = i.wPos;
-                //float3 viewDirection = normalize(i.wPos - _WorldSpaceCameraPos);
+                float3 worldPosition = i.viewVector;
+                float3 viewDirection = normalize(i.viewVector - _WorldSpaceCameraPos);
+
+                if (raycastHit(worldPosition, viewDirection))
+                {
+                    return fixed4(1, 0, 0, 1); //red if hit
+                }
+
+                else
+                {
+                    return fixed4(1, 0, 0, 1); //white if not hit
+                }
 
                 //CREATING RAYS
-                float3 rayPos = _WorldSpaceCameraPos;
+                /*float3 rayPos = _WorldSpaceCameraPos;
                 float viewLength = length(i.viewVector);
-                float3 rayDir = i.viewVector / viewLength;
+                float3 rayDir = i.viewVector / viewLength;*/
 
                 //SAMPLING A TEXTURE
-                float2 uvs = i.uv;
+                //float2 uvs = i.uv;
                 
                 //return fixed4(uvs, 0, 1);
-                fixed4 textureColour = tex2D(_MainTex, uvs);
+                //fixed4 textureColour = tex2D(_MainTex, uvs);
 
-                return Raymarch(rayPos, rayDir);
+                //return Raymarch(rayPos, rayDir);
                 //return textureColour;
                 //return  Raymarch(worldPosition, viewDirection);
             }
