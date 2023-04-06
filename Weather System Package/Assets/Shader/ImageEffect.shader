@@ -90,12 +90,12 @@ Shader "Shayders/ImageEffect"
                     {
                         //return fixed4(0.0, 1.0, 0.0, 1.0); //green hit something
                         float3 normal = calculate_normal(currentPos);
-                        float3 light_position = float3(10.0, 2.0, 5.0); // position of light
+                        float3 light_position = float3(5.0, 2.0, 5.0); // position of light
                         float3 direction_to_light = normalize(currentPos - light_position);
                         float diffuse_intensity = max(0.0, dot(normal, direction_to_light));
     
 
-                        return fixed4(1.0, 0.0, 0.0, 0.0) * diffuse_intensity;
+                        return fixed4(0.0, 0.0, 1.0, 0.0) * diffuse_intensity;
                     }
 
                     if (totalDistanceTravelled > maxTraceDistance)
