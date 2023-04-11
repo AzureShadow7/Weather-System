@@ -10,7 +10,7 @@ Shader "Shayders/ImageEffect"
     {
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
-
+        Tags {"Queue" = "Transparent" "RenderType" = "Transparent"}
         Pass
         {
             CGPROGRAM
@@ -24,6 +24,8 @@ Shader "Shayders/ImageEffect"
             //float _x, _y, _z;
             //float3 p = float3 (0.0, 0.0, 0.0);
             //float centre = float3 (0.0, -4.0, 0.0);
+
+            float shapes[2];
 
             struct appdata
             {
@@ -54,12 +56,34 @@ Shader "Shayders/ImageEffect"
                 return length(p - centre) - radius;
             }
 
+            float shapeBlend(float shape1, float shape2, float a)
+            {
+                return a * shape1 + (1 - a) * shape2;
+            }
+
+            /*float shapeSMin(float a, float b, float k = 32)
+            {
+                float res = exp(-k * a)
+            }*/
+
             float map_the_world(float3 p)
             {
                 float displacement = sin(5.0 * p.x) * sin(5.0 * p.y) * sin(5.0 * p.z) * 0.25;
                 float sphere_0 = sphereDistance(p, float3(0.0, 0.0, 0.0), 1.0);
+                float sphere_1 = sphereDistance(p, float3(0.0, 1.0, 0.0), 2.0);
 
-                return sphere_0 + displacement;
+                shapes[0] = sphere_0;
+                shapes[1] = sphere_1;
+
+                float _sphere1 = sphere_0 + displacement;
+                float _sphere2 = sphere_1 + displacement;
+
+                float d;
+
+                d = shapeBlend(_sphere1, _sphere2, (_SinTime[2] + 1.0) / 2.0);
+
+                //return min(sphere_0, sphere_1) + displacement;
+                return d;
             }
 
             float3 calculate_normal(float3 p)
@@ -106,7 +130,8 @@ Shader "Shayders/ImageEffect"
                     totalDistanceTravelled += distanceToClosest;
                 }
 
-                return fixed4(0.0, 0.0, 0.0, 0.0); //red hit nothing
+
+                return fixed4(0.0, 0.0, 0.0, 0.0); //black hit nothing
             }
 
             sampler2D _MainTex;
@@ -119,6 +144,7 @@ Shader "Shayders/ImageEffect"
                //col.rgb = 1 - col.rgb;
 
                 float4 col = float4(i.uv.x, i.uv.y, 0, 1);
+                //float3 col = tex2D(_MainTex, i.uv);
 
                 //return col;
                 float2 uv = i.uv.xy * 2.0 - 1.0;
