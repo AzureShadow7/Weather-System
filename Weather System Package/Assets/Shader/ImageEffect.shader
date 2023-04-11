@@ -25,7 +25,7 @@ Shader "Shayders/ImageEffect"
             //float3 p = float3 (0.0, 0.0, 0.0);
             //float centre = float3 (0.0, -4.0, 0.0);
 
-            float shapes[2];
+            //float shapes[2];
 
             struct appdata
             {
@@ -72,8 +72,8 @@ Shader "Shayders/ImageEffect"
                 float sphere_0 = sphereDistance(p, float3(0.0, 0.0, 0.0), 1.0);
                 float sphere_1 = sphereDistance(p, float3(0.0, 1.0, 0.0), 2.0);
 
-                shapes[0] = sphere_0;
-                shapes[1] = sphere_1;
+                //shapes[0] = sphere_0;
+                //shapes[1] = sphere_1;
 
                 float _sphere1 = sphere_0 + displacement;
                 float _sphere2 = sphere_1 + displacement;
