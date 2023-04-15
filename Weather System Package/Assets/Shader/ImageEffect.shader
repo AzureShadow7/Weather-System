@@ -120,6 +120,7 @@ Shader "Shayders/ImageEffect"
                 return clamp(2 * f - p.y - 1, 0.0, 1.0);
             }
 
+
             float3 lighting(const float3 pos, const float cloudDensity
                 , const float3 backgroundColor, const float pathLength)
             {
@@ -169,7 +170,7 @@ Shader "Shayders/ImageEffect"
             float4 raymarchClouds(float3 rayOrigin, float3 rayDir, const float3 backgroundColor)
             {
                 float4 sum = float4(0.0, 0.0, 0.0, 0.0);
-                float t = 0.1;
+                float t = 0.02;
                 for (int i = 0; i < STEPS; ++i)
                 {
                     float3 pos = rayOrigin + t * rayDir;
