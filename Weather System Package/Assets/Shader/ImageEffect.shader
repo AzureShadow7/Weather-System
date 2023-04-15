@@ -19,7 +19,7 @@ Shader "Shayders/ImageEffect"
             #pragma fragment frag
 
             #include "UnityCG.cginc"
-            #define STEPS 32
+            #define STEPS 100
             #define STEP_SIZE 0.1;
             #define OCTAVES 3
 
@@ -169,12 +169,15 @@ Shader "Shayders/ImageEffect"
             float4 raymarchClouds(float3 rayOrigin, float3 rayDir, const float3 backgroundColor)
             {
                 float4 sum = float4(0.0, 0.0, 0.0, 0.0);
-                float t = 0.0;
+                float t = 0.1;
                 for (int i = 0; i < STEPS; ++i)
                 {
                     float3 pos = rayOrigin + t * rayDir;
+
                     if (0.99 < sum.a) break; //break if opaque
-                    float cloudDensity = 1.0;// densityFunc(pos);
+
+                    float cloudDensity = densityFunc(pos);
+
                     if (0.01 < cloudDensity) // if not empty -> light and accumulate 
                     {
                         float3 colorRGB = lighting(pos, cloudDensity, backgroundColor, t);
@@ -248,24 +251,6 @@ Shader "Shayders/ImageEffect"
 
                     totalDistanceTravelled += distanceToClosest;
 
-                    /*if (density > 0.0)
-                    {
-                        float tmp = density / STEPS;
-                        t *= 1.0 - (tmp * absorption);
-
-                        if (t <= 0.01)
-                        {
-                            break;
-                        }
-
-                        float t1 = 1.0;
-                        float3 lp = p;
-
-                        for (int j = 0; j < sampleLightCount; j++)
-                        {
-                            float
-                        }
-                    }*/
 
                     totalDistanceTravelled += max(0.05, 0.02 * totalDistanceTravelled);
                 }
@@ -277,7 +262,6 @@ Shader "Shayders/ImageEffect"
 
             sampler2D _MainTex;
             float4 o_colour;
-            //float3 col;
 
             fixed4 frag(v2f i) : SV_Target
             {
@@ -303,7 +287,7 @@ Shader "Shayders/ImageEffect"
                 //float3 shaded_colour = raymarching(rayOrigin, rayDirection);
                 //o_colour = float4(shaded_colour, 1.0);
 
-                float4 res = raymarching(rayOrigin, rayDirection, backgroundSky);
+                float4 res = raymarchClouds(rayOrigin, rayDirection, backgroundSky);
                 float3 col = backgroundSky * 1.0 - res.a + res.rgb;
 
                 col += 0.2 * float3(1.0, 0.4, 0.2) * pow(sun, 3.0);
