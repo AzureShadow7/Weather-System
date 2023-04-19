@@ -27,8 +27,6 @@ Shader "Shayders/ImageEffect"
 
             float time;//= GlobalTime + 0.7;
 
-            float3 sunDir;
-
             float3 sundir;
 
             struct appdata
@@ -155,6 +153,21 @@ Shader "Shayders/ImageEffect"
                 return d;
             }
 
+            float cloud_sdf(float3 p)
+            {
+                float sphere_size = 1.5;
+                float noise_size = 0.7;
+                float noise_freq = 2.5;
+                float sphere_space_scale = 0.3;
+                float3 cloud_shape = float3(0.8, 1.0, 0.8);
+
+                float3 q = p * noise_freq;
+                //q += float3(0.0, 0.10, 0.0) * noise_freq;
+
+                float sph = sphere_size - length(p * cloud_shape) + fbm(q, OCTAVES) * noise_size;
+                return sph * sphere_space_scale;
+            }
+
             float3 calculate_normal(float3 p)
             {
                 const float3 small_step = float3(0.001, 0.0, 0.0);
@@ -169,6 +182,13 @@ Shader "Shayders/ImageEffect"
 
             float4 raymarchClouds(float3 rayOrigin, float3 rayDir, const float3 backgroundColor)
             {
+
+                // background sky
+                float sun = clamp(dot(sundir, rayDir), 0.0, 1.0);
+                float3 backgroundSky = float3(0.7, 0.79, 0.83)
+                    - rayDir.y * 0.2 * float3(1.0, 0.5, 1.0)
+                    + 0.2 * float3(1.0, 0.6, 0.1) * pow(sun, 8.0);
+
                 float4 sum = float4(0.0, 0.0, 0.0, 0.0);
                 float t = 0.02;
                 for (int i = 0; i < STEPS; ++i)
@@ -191,75 +211,75 @@ Shader "Shayders/ImageEffect"
                 return clamp(sum, 0.0, 1.0);
             }
 
-            fixed4 raymarching(float3 rayOrigin, float3 rayDir, const float3 backgroundCol)
-            {
-                // background sky
-                float sun = clamp(dot(sundir, rayDir), 0.0, 1.0);
-                float3 backgroundSky = float3(0.7, 0.79, 0.83)
-                    - rayDir.y * 0.2 * float3(1.0, 0.5, 1.0)
-                    + 0.2 * float3(1.0, 0.6, 0.1) * pow(sun, 8.0);
+            //fixed4 raymarching(float3 rayOrigin, float3 rayDir, const float3 backgroundCol)
+            //{
+            //    // background sky
+            //    float sun = clamp(dot(sundir, rayDir), 0.0, 1.0);
+            //    float3 backgroundSky = float3(0.7, 0.79, 0.83)
+            //        - rayDir.y * 0.2 * float3(1.0, 0.5, 1.0)
+            //        + 0.2 * float3(1.0, 0.6, 0.1) * pow(sun, 8.0);
 
 
 
-                fixed4 sum = (0.0, 0.0, 0.0, 0.0);
-                float totalDistanceTravelled = 0.0;
-                float t = 1.0;
-                float absorption = 100.0;
-                float3 light_direction = normalize(float3(1.0, 2.0, 0.0));
-                float3 p = rayOrigin;
-                const int sampleLightCount = 10;
+            //    fixed4 sum = (0.0, 0.0, 0.0, 0.0);
+            //    float totalDistanceTravelled = 0.0;
+            //    float t = 1.0;
+            //    float absorption = 100.0;
+            //    float3 light_direction = normalize(float3(1.0, 2.0, 0.0));
+            //    float3 p = rayOrigin;
+            //    const int sampleLightCount = 10;
 
-                float zMax = 40.0;
-                float zstep = zMax / STEPS; 
+            //    float zMax = 40.0;
+            //    float zstep = zMax / STEPS; 
 
-                float minHitDistance = 0.001;
-                float maxTraceDistance = 1000.0;
+            //    float minHitDistance = 0.001;
+            //    float maxTraceDistance = 1000.0;
 
-                for (int i = 0; i < STEPS; i++)
-                {
-                    float3 currentPos = rayOrigin + totalDistanceTravelled * rayDir;
+            //    for (int i = 0; i < STEPS; i++)
+            //    {
+            //        float3 currentPos = rayOrigin + totalDistanceTravelled * rayDir;
 
-                    float distanceToClosest = map_the_world(currentPos); //sphereDistance(currentPos, float3(0.0, 0.0, 0.0), 1.0);
+            //        float distanceToClosest = map_the_world(currentPos); //sphereDistance(currentPos, float3(0.0, 0.0, 0.0), 1.0);
 
-                    /*if (0.99 < sum.a) break;
+            //        /*if (0.99 < sum.a) break;
 
-                    float density = scene(p)*/
+            //        float density = scene(p)*/
 
-                    if (distanceToClosest < minHitDistance)
-                    {
-                        //return fixed4(0.0, 1.0, 0.0, 1.0); //green hit something
-                        float3 normal = calculate_normal(currentPos);
-                        float3 light_position = float3(5.0, 2.0, 5.0); // position of light
-                        float3 direction_to_light = normalize(currentPos - light_position);
-                        float diffuse_intensity = max(0.0, dot(normal, direction_to_light));
+            //        if (distanceToClosest < minHitDistance)
+            //        {
+            //            //return fixed4(0.0, 1.0, 0.0, 1.0); //green hit something
+            //            float3 normal = calculate_normal(currentPos);
+            //            float3 light_position = float3(5.0, 2.0, 5.0); // position of light
+            //            float3 direction_to_light = normalize(currentPos - light_position);
+            //            float diffuse_intensity = max(0.0, dot(normal, direction_to_light));
 
-                        // clouds
-                        float4 res = raymarchClouds(rayOrigin, rayDir, backgroundSky);
-                        float3 col = backgroundSky * (1.0 - res.a) + res.rgb; // blend clouds with sky
+            //            // clouds
+            //            float4 res = raymarchClouds(rayOrigin, rayDir, backgroundSky);
+            //            float3 col = backgroundSky * (1.0 - res.a) + res.rgb; // blend clouds with sky
 
-                        // add sun glare
-                        col += 0.2 * float3(1.0, 0.4, 0.2) * pow(sun, 3.0);
+            //            // add sun glare
+            //            col += 0.2 * float3(1.0, 0.4, 0.2) * pow(sun, 3.0);
 
-                        return float4(col,0.0);
+            //            return float4(col,0.0);
 
-                        //return fixed4(0.0, 0.0, 1.0, 0.0) * diffuse_intensity;
-                    }
+            //            //return fixed4(0.0, 0.0, 1.0, 0.0) * diffuse_intensity;
+            //        }
 
-                    if (totalDistanceTravelled > maxTraceDistance)
-                    {
-                        break;
-                    }
+            //        if (totalDistanceTravelled > maxTraceDistance)
+            //        {
+            //            break;
+            //        }
 
-                    totalDistanceTravelled += distanceToClosest;
+            //        totalDistanceTravelled += distanceToClosest;
 
 
-                    totalDistanceTravelled += max(0.05, 0.02 * totalDistanceTravelled);
-                }
+            //        totalDistanceTravelled += max(0.05, 0.02 * totalDistanceTravelled);
+            //    }
 
-                return fixed4(0.0, 0.0, 0.0, 0.0); //black hit nothing
+            //    return fixed4(0.0, 0.0, 0.0, 0.0); //black hit nothing
 
-                //return clamp(sum, 0.0, 1.0);
-            }
+            //    //return clamp(sum, 0.0, 1.0);
+            //}
 
             sampler2D _MainTex;
             float4 o_colour;
@@ -270,7 +290,7 @@ Shader "Shayders/ImageEffect"
                  //just invert the colors
                //col.rgb = 1 - col.rgb;
 
-                sunDir = normalize(float3(sin(time), 0.0, cos(time)));
+                sundir = normalize(float3(sin(time), 0.0, cos(time)));
 
                 //float4 col = float4(i.uv.x, i.uv.y, 0, 1);
                 //float3 col = tex2D(_MainTex, i.uv);
@@ -282,8 +302,8 @@ Shader "Shayders/ImageEffect"
                 //float3 rayOrigin = (0.0, 0.0, 0.0);
                 float3 rayDirection = float3(uv, 1.0);
 
-                float sun = clamp(dot(sunDir, rayDirection), 0.0, 1.0);
-                float3 backgroundSky = float3(0.07, 0.79, 0.83) - rayDirection.y * 0.2 * float3(1.0, 0.5, 1.0) + 0.2 * float3(1.0, 0.6, 0.1) * pow(sun, 0.8);
+                float sun = clamp(dot(sundir, rayDirection), 0.0, 1.0);
+                float3 backgroundSky = float3(0.75, 0.65, 0.83) - rayDirection.y * 0.2 * float3(1.0, 0.5, 1.0) + 0.2 * float3(1.0, 0.6, 0.1) * pow(sun, 0.8);
 
                 //float3 shaded_colour = raymarching(rayOrigin, rayDirection);
                 //o_colour = float4(shaded_colour, 1.0);
@@ -294,7 +314,7 @@ Shader "Shayders/ImageEffect"
                 col += 0.2 * float3(1.0, 0.4, 0.2) * pow(sun, 3.0);
 
                 //return o_colour;
-                return res;
+                return float4(col, 0.0);
             }
             ENDCG
         }
