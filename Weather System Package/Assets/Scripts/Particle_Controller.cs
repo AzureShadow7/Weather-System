@@ -140,9 +140,8 @@ public class Particle_Controller : MonoBehaviour
 
                     if (groundChange.gradualSnowMat.GetFloat("_Snow_Amount") > 1.0f)
                     {
-                        Debug.Log("Time for Thick snow");
                         groundChange.snowedGround();
-                        Debug.Log("Thick snow");
+
                     }
                 }
 
