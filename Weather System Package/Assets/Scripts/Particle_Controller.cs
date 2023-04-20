@@ -8,6 +8,9 @@ public class Particle_Controller : MonoBehaviour
     private ParticleSystem weatherParticle;
     private ParticleSystemRenderer weatherParticleRenderer;
 
+    GroundChange groundChange;
+    public GameObject plane;
+
     [SerializeField] Material[] particleMaterial;
 
     public Camera cam;
@@ -21,6 +24,8 @@ public class Particle_Controller : MonoBehaviour
 
     //WETNESS
     [SerializeField] private Material wetnessMat;
+    //[SerializeField] private Material gradualSnowMat;
+
 
     public enum weatherParticleIntensity
     {
@@ -42,6 +47,7 @@ public class Particle_Controller : MonoBehaviour
     {
         weatherParticle = GetComponent<ParticleSystem>();
         weatherParticleRenderer = GetComponent<ParticleSystemRenderer>();
+        groundChange = plane.GetComponent<GroundChange>();
 
         //snowSize = new AnimationCurve[2];
 
@@ -91,6 +97,7 @@ public class Particle_Controller : MonoBehaviour
         switch (weather)
         {
             case weatherType.rain:
+                groundChange.rainfall();
                 weatherParticleRenderer.material = particleMaterial[0];
                 weatherParticleRenderer.renderMode = ParticleSystemRenderMode.Stretch;
                 weatherParticleSimSpeed.startSize3D = true;
@@ -99,6 +106,7 @@ public class Particle_Controller : MonoBehaviour
                 break;
 
             case weatherType.snow:
+                groundChange.snowfall();
                 weatherParticleRenderer.material = particleMaterial[1];
                 weatherParticleRenderer.renderMode = ParticleSystemRenderMode.Billboard;
                 weatherParticleSimSpeed.startSize3D = true;
@@ -123,6 +131,21 @@ public class Particle_Controller : MonoBehaviour
                     wetnessMat.SetFloat("_Wetness", wetnessAmount);
                 }
 
+                if (weather == weatherType.snow)
+                {
+                    groundChange.gradualSnowMat.SetFloat("_Snow_Amount", 0.0f);
+                    float snowAmount = (Time.time / 50.0f) % 1.2f;
+                    groundChange.gradualSnowMat.SetFloat("_Snow_Amount", snowAmount);
+                    //Debug.Log(groundChange.gradualSnowMat.GetFloat("_Snow_Amount"));
+
+                    if (groundChange.gradualSnowMat.GetFloat("_Snow_Amount") > 1.0f)
+                    {
+                        Debug.Log("Time for Thick snow");
+                        groundChange.snowedGround();
+                        Debug.Log("Thick snow");
+                    }
+                }
+
                 break;
 
             case weatherParticleIntensity.heavy:
@@ -137,6 +160,7 @@ public class Particle_Controller : MonoBehaviour
                 }
 
                 break;
+
         }
 
     }

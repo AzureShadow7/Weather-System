@@ -59,8 +59,8 @@ Material:
     - _Occlusion_Strength: 1.52
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 4.04
-    - _Wetness: 1.6251528
+    - _Smoothness: 3.86
+    - _Wetness: 0.9899539
     - _WetnessDarkness: 0.73
     - _Wetness_Volume: 0.28
     m_Colors:
