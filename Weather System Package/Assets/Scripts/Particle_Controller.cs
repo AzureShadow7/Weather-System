@@ -8,13 +8,14 @@ public class Particle_Controller : MonoBehaviour
     private ParticleSystem weatherParticle;
     private ParticleSystemRenderer weatherParticleRenderer;
 
-    GroundChange groundChange;
+    MaterialChange groundChange;
+    Material_Manager material_Manager;
+
     public GameObject plane;
+    public GameObject matManager;
+    //public GameObject building2;
 
     [SerializeField] Material[] particleMaterial;
-
-    public Camera cam;
-    public GameObject player;
 
     //private AnimationCurve[] snowSize;
     AnimationCurve snowSize;
@@ -23,9 +24,15 @@ public class Particle_Controller : MonoBehaviour
     public float constantVal;
 
     //WETNESS
-    [SerializeField] private Material wetnessMat;
-    //[SerializeField] private Material gradualSnowMat;
+    [Header("Wet Materials")]
+    [SerializeField] Material[] wetnessMaterials;
 
+    [Header("Snow Materials")]
+    [SerializeField] Material[] snowyMaterials;
+
+    //Helper variables
+    float wetnessRate;
+    public float wetnessThreshold; //fully submerged 11.0f, partially 2.83 > x < 11.0f
 
     public enum weatherParticleIntensity
     {
@@ -47,14 +54,10 @@ public class Particle_Controller : MonoBehaviour
     {
         weatherParticle = GetComponent<ParticleSystem>();
         weatherParticleRenderer = GetComponent<ParticleSystemRenderer>();
-        groundChange = plane.GetComponent<GroundChange>();
+        groundChange = plane.GetComponent<MaterialChange>();
+        material_Manager = matManager.GetComponent<Material_Manager>();
 
-        //snowSize = new AnimationCurve[2];
-
-        //snowSize[0] = new AnimationCurve();
-        //snowSize[0].AddKey(0.0f, 0.5f);
-        //snowSize[0].AddKey(3.0f, 0.45f);
-        //snowSize[0].AddKey(6.0f, 1.0f);
+        wetnessRate = 0.1f;
 
         snowSize = new AnimationCurve();
         snowSizeMin = new AnimationCurve();
@@ -76,28 +79,25 @@ public class Particle_Controller : MonoBehaviour
         var weatherParticleEmRate = weatherParticle.emission;
         var weatherParticleSimSpeed = weatherParticle.main;
 
-        //float camToPlayerDist;
+        if (Input.GetKeyUp(KeyCode.Alpha0))
+        {
+            for(int i = 0; i < wetnessMaterials.Length; i++)
+            {
+                wetnessMaterials[i].SetFloat("_Wetness", 0.0f);
+            }
 
-        //camToPlayerDist = Vector3.Distance(cam.transform.position, player.transform.position);
+            for (int i = 0; i < snowyMaterials.Length; i++)
+            {
+                snowyMaterials[i].SetFloat("_Snow_Amount", 0.0f);
+            }
+        }
 
-        //if (camToPlayerDist < 20.0f) //closer to camera is more particles
-        //{
-        //    main.maxParticles = 1000;
-        //}
-        //else
-        //{
-        //    main.maxParticles = 10;
-        //}
-
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    Debug.Log("Distance is: " + camToPlayerDist);
-        //}
 
         switch (weather)
         {
             case weatherType.rain:
                 groundChange.rainfall();
+                material_Manager.rainfall();
                 weatherParticleRenderer.material = particleMaterial[0];
                 weatherParticleRenderer.renderMode = ParticleSystemRenderMode.Stretch;
                 weatherParticleSimSpeed.startSize3D = true;
@@ -107,6 +107,7 @@ public class Particle_Controller : MonoBehaviour
 
             case weatherType.snow:
                 groundChange.snowfall();
+                material_Manager.snowfall();
                 weatherParticleRenderer.material = particleMaterial[1];
                 weatherParticleRenderer.renderMode = ParticleSystemRenderMode.Billboard;
                 weatherParticleSimSpeed.startSize3D = true;
@@ -126,22 +127,32 @@ public class Particle_Controller : MonoBehaviour
 
                 if (weather == weatherType.rain)
                 {
-                    float wetnessAmount = wetnessMat.GetFloat("_Wetness");
-                    wetnessAmount = wetnessAmount += 0.009f * Time.deltaTime;//(Time.time / 50.0f) % 1.2f;
-                    wetnessMat.SetFloat("_Wetness", wetnessAmount);
+                    for (int i = 0; i < wetnessMaterials.Length; i++)
+                    {
+                        float wetnessAmount = wetnessMaterials[i].GetFloat("_Wetness");
+                        wetnessAmount = wetnessAmount += 0.009f * Time.deltaTime;//(Time.time / 50.0f) % 1.2f;
+                        wetnessMaterials[i].SetFloat("_Wetness", wetnessAmount);
+                    }
+                    
                 }
 
                 if (weather == weatherType.snow)
                 {
-                    groundChange.gradualSnowMat.SetFloat("_Snow_Amount", 0.0f);
-                    float snowAmount = (Time.time / 50.0f) % 1.2f;
-                    groundChange.gradualSnowMat.SetFloat("_Snow_Amount", snowAmount);
-                    //Debug.Log(groundChange.gradualSnowMat.GetFloat("_Snow_Amount"));
+                    //groundChange.gradualSnowMat.SetFloat("_Snow_Amount", 0.0f);
+                    //float snowAmount = (Time.time / 50.0f) % 1.2f;
+
+                    for (int i = 0; i < snowyMaterials.Length; i++)
+                    {
+                        float snowAmount = snowyMaterials[i].GetFloat("_Snow_Amount");
+
+                        snowAmount = snowAmount + 0.01f * Time.deltaTime;
+
+                        snowyMaterials[i].SetFloat("_Snow_Amount", snowAmount);
+                    }
 
                     if (groundChange.gradualSnowMat.GetFloat("_Snow_Amount") > 1.0f)
                     {
                         groundChange.snowedGround();
-
                     }
                 }
 
@@ -153,9 +164,38 @@ public class Particle_Controller : MonoBehaviour
 
                 if (weather == weatherType.rain)
                 {
-                    float wetnessAmount = wetnessMat.GetFloat("_Wetness");
-                    wetnessAmount = wetnessAmount += 0.1f * Time.deltaTime;//(Time.time / 50.0f) % 1.2f;
-                    wetnessMat.SetFloat("_Wetness", wetnessAmount);
+
+                    for(int i = 0; i < wetnessMaterials.Length; i++ )
+                    {
+                        float wetnessAmount = wetnessMaterials[i].GetFloat("_Wetness");
+                        wetnessAmount = wetnessAmount += wetnessRate * Time.deltaTime;//(Time.time / 50.0f) % 1.2f;
+                        wetnessMaterials[i].SetFloat("_Wetness", wetnessAmount);
+
+                        if (wetnessMaterials[i].GetFloat("_Wetness") > wetnessThreshold)
+                        {
+                            wetnessRate = 0.0f;
+                        }
+                    }
+                    
+                }
+
+                if (weather == weatherType.snow)
+                {
+                    for (int i = 0; i < snowyMaterials.Length; i++)
+                    {
+                        float snowAmount = snowyMaterials[i].GetFloat("_Snow_Amount");
+
+                        snowAmount = snowAmount + 0.05f * Time.deltaTime;
+
+                        snowyMaterials[i].SetFloat("_Snow_Amount", snowAmount);
+                    }
+
+                    if (groundChange.gradualSnowMat.GetFloat("_Snow_Amount") > 1.0f)
+                    {
+                        //groundChange.snowedGround();
+                        material_Manager.snowedGround();
+
+                    }
                 }
 
                 break;
