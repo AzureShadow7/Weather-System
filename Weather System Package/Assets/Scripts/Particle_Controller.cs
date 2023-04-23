@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class Particle_Controller : MonoBehaviour
@@ -33,6 +36,9 @@ public class Particle_Controller : MonoBehaviour
     //Helper variables
     float wetnessRate;
     public float wetnessThreshold; //fully submerged 11.0f, partially 2.83 > x < 11.0f
+
+
+    public TMP_Dropdown dropdown;
 
     public enum weatherParticleIntensity
     {
@@ -73,9 +79,49 @@ public class Particle_Controller : MonoBehaviour
         constantVal = 1.0f;
     }
 
+    public void weatherChange(int index)
+    {
+        if (index == 0)
+        {
+            weather = weatherType.rain;
+        }
+
+        if (index == 1)
+        {
+            weather = weatherType.snow;
+        }
+    }
+
+    public void resetEffects()
+    {
+        for (int i = 0; i < wetnessMaterials.Length; i++)
+        {
+            wetnessMaterials[i].SetFloat("_Wetness", 0.0f);
+        }
+
+        for (int i = 0; i < snowyMaterials.Length; i++)
+        {
+            snowyMaterials[i].SetFloat("_Snow_Amount", 0.0f);
+        }
+    }
+
+    public void weatherIntensityCheck(int level)
+    {
+        if (level == 0)
+        {
+            intensity = weatherParticleIntensity.light;
+        }
+
+        if (level == 1)
+        {
+            intensity = weatherParticleIntensity.heavy;
+        }
+    }
+
     //Update is called once per frame
     void Update()
     {
+
         var weatherParticleEmRate = weatherParticle.emission;
         var weatherParticleSimSpeed = weatherParticle.main;
 
@@ -102,7 +148,7 @@ public class Particle_Controller : MonoBehaviour
                 weatherParticleRenderer.renderMode = ParticleSystemRenderMode.Stretch;
                 weatherParticleSimSpeed.startSize3D = true;
                 weatherParticleSimSpeed.startSizeX = 0.1f;
-                weatherParticleSimSpeed.startSizeY = Random.Range(0.5f, 1.0f);
+                weatherParticleSimSpeed.startSizeY = UnityEngine.Random.Range(0.5f, 1.0f);
                 break;
 
             case weatherType.snow:
@@ -194,7 +240,6 @@ public class Particle_Controller : MonoBehaviour
                     {
                         //groundChange.snowedGround();
                         material_Manager.snowedGround();
-
                     }
                 }
 
