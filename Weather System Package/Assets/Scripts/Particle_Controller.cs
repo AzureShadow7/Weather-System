@@ -37,9 +37,6 @@ public class Particle_Controller : MonoBehaviour
     float wetnessRate;
     public float wetnessThreshold; //fully submerged 11.0f, partially 2.83 > x < 11.0f
 
-
-    public TMP_Dropdown dropdown;
-
     public enum weatherParticleIntensity
     {
         light,
