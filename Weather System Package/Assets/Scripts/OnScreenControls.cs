@@ -143,4 +143,9 @@ public class OnScreenControls : MonoBehaviour
         });
     }
 
+    public void CloseApplication()
+    {
+        Application.Quit();
+    }
+
 }

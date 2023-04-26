@@ -107,9 +107,9 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SnowHeight: 0.003470568
-    - _Snow_Bumpiness: 2.0976553
+    - _Snow_Bumpiness: 2.35
     - _Snow_Scale: 64.65325
-    - _Snow_Thickness: 8.329346
+    - _Snow_Thickness: 8.3
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0

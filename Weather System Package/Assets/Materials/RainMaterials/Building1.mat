@@ -138,7 +138,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Wetness: 0.9430628
+    - _Wetness: 1.262243
     - _WetnessDarkness: 3.8
     - _Wetness_Volume: 0.3831303
     - _WorkflowMode: 1
