@@ -106,10 +106,10 @@ Material:
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SnowHeight: 0
-    - _Snow_Bumpiness: 1.7548281
+    - _SnowHeight: 0.003470568
+    - _Snow_Bumpiness: 2.0976553
     - _Snow_Scale: 64.65325
-    - _Snow_Thickness: 15.80412
+    - _Snow_Thickness: 8.329346
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
