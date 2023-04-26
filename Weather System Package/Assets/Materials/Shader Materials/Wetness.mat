@@ -60,7 +60,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 2.53
-    - _Wetness: 0.70306224
+    - _Wetness: 0.9430628
     - _WetnessDarkness: 0.36
     - _Wetness_Volume: 0.45
     m_Colors:

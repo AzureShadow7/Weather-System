@@ -115,7 +115,7 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Occlusion_Strength: 1.56
+    - _Occlusion_Strength: 6.8245044
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -125,9 +125,9 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Wetness: 0.70306224
+    - _Wetness: 0.9430628
     - _WetnessDarkness: 1.17
-    - _Wetness_Volume: 1.25
+    - _Wetness_Volume: 0.3831303
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

@@ -17,9 +17,9 @@ public class OnScreenControls : MonoBehaviour
 
     [SerializeField] private Slider wetnessLimit;
     [SerializeField] private Slider occlusionStrengthSlider;
+    [SerializeField] private Slider wetnessVolumeSlider;
 
     private List<Material> rainMaterials = new List<Material>();
-
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +35,8 @@ public class OnScreenControls : MonoBehaviour
         rainMaterials.Add(material_Manager.building1rainMat);
         rainMaterials.Add(material_Manager.building2rainMat);
         rainMaterials.Add(material_Manager.building3rainMat);
+
+        Debug.Log(rainMaterials.Count);
     }
 
     // Update is called once per frame
@@ -51,20 +53,45 @@ public class OnScreenControls : MonoBehaviour
             rainSettingsPanel.SetActive(false);
             snowSettingsPanel.SetActive(true);
         }
+
         occlusionStrength();
+        wetnessVolume();
     }
 
     void occlusionStrength()
     {
-        for (int i = 0; i < rainMaterials.Count; i++)
+        
+
+        foreach (var mat in rainMaterials)
         {
-            float strength = rainMaterials[i].GetFloat("_Occlusion_Strength");
+            float strength = mat.GetFloat("_Occlusion_Strength");
+
 
             occlusionStrengthSlider.onValueChanged.AddListener((limit) =>
             {
-                strength = limit;
-                rainMaterials[i].SetFloat("_Occlusion_Strength", strength);
+                //strength = limit;
+                mat.SetFloat("_Occlusion_Strength", limit);
             });
+
+            //Debug.Log("Strength " + strength);
+        }
+        
+    }
+
+    void wetnessVolume()
+    {
+        foreach (var mat in rainMaterials)
+        {
+            float strength = mat.GetFloat("_Wetness_Volume");
+
+
+            wetnessVolumeSlider.onValueChanged.AddListener((limit) =>
+            {
+                //strength = limit;
+                mat.SetFloat("_Wetness_Volume", limit);
+            });
+
+            //Debug.Log("Strength " + strength);
         }
     }
 }

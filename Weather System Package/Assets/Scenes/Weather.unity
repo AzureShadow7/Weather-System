@@ -3634,6 +3634,7 @@ MonoBehaviour:
   snowSettingsPanel: {fileID: 1413860698}
   wetnessLimit: {fileID: 1835493266}
   occlusionStrengthSlider: {fileID: 1886164715}
+  wetnessVolumeSlider: {fileID: 195304244}
 --- !u!1 &917688340
 GameObject:
   m_ObjectHideFlags: 0
