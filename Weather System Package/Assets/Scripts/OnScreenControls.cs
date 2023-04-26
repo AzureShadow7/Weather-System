@@ -19,13 +19,21 @@ public class OnScreenControls : MonoBehaviour
     [SerializeField] private Slider occlusionStrengthSlider;
     [SerializeField] private Slider wetnessVolumeSlider;
 
+    [SerializeField] private Slider snowScaleSlider;
+    [SerializeField] private Slider snowHeightSlider;
+    [SerializeField] private Slider snowThicknessSlider;
+    [SerializeField] private Slider snowBumpinessSlider;
+
     private List<Material> rainMaterials = new List<Material>();
+    private Material groundMaterial;
 
     // Start is called before the first frame update
     void Start()
     {
         particle_Controller = particleControllerObject.GetComponent<Particle_Controller>();
         material_Manager = materialManagerObject.GetComponent<Material_Manager>();
+
+        groundMaterial = material_Manager.walkablesnowMat;
 
         wetnessLimit.onValueChanged.AddListener((limit) =>
         {
@@ -56,6 +64,10 @@ public class OnScreenControls : MonoBehaviour
 
         occlusionStrength();
         wetnessVolume();
+        snowScale();
+        snowThickness();
+        snowHeight();
+        snowBumpiness();
     }
 
     void occlusionStrength()
@@ -93,5 +105,41 @@ public class OnScreenControls : MonoBehaviour
 
             //Debug.Log("Strength " + strength);
         }
+    }
+
+    void snowScale()
+    {
+        snowScaleSlider.onValueChanged.AddListener((limit) =>
+        {
+            //strength = limit;
+            groundMaterial.SetFloat("_Snow_Scale", limit);
+        });
+    }
+
+    void snowHeight()
+    {
+        snowHeightSlider.onValueChanged.AddListener((limit) =>
+        {
+            //strength = limit;
+            groundMaterial.SetFloat("_SnowHeight", limit);
+        });
+    }
+
+    void snowThickness()
+    {
+        snowThicknessSlider.onValueChanged.AddListener((limit) =>
+        {
+            //strength = limit;
+            groundMaterial.SetFloat("_Snow_Thickness", limit);
+        });
+    }
+
+    void snowBumpiness()
+    {
+        snowBumpinessSlider.onValueChanged.AddListener((limit) =>
+        {
+            //strength = limit;
+            groundMaterial.SetFloat("_Snow_Bumpiness", limit);
+        });
     }
 }
