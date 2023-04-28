@@ -2330,6 +2330,26 @@ PrefabInstance:
       propertyPath: ShapeModule.m_Scale.z
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 6855270655548414633, guid: 6b8a7ba46990277459b9c2b083665a38,
+        type: 3}
+      propertyPath: VelocityModule.x.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6855270655548414633, guid: 6b8a7ba46990277459b9c2b083665a38,
+        type: 3}
+      propertyPath: VelocityModule.y.scalar
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6855270655548414633, guid: 6b8a7ba46990277459b9c2b083665a38,
+        type: 3}
+      propertyPath: VelocityModule.y.minScalar
+      value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6855270655548414633, guid: 6b8a7ba46990277459b9c2b083665a38,
+        type: 3}
+      propertyPath: InitialModule.gravityModifier.scalar
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6855270655548414635, guid: 6b8a7ba46990277459b9c2b083665a38,
         type: 3}
       propertyPath: m_RootOrder
@@ -2434,7 +2454,7 @@ PrefabInstance:
     - target: {fileID: 6855270655548414644, guid: 6b8a7ba46990277459b9c2b083665a38,
         type: 3}
       propertyPath: wetnessThreshold
-      value: 2.83
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6855270655548414644, guid: 6b8a7ba46990277459b9c2b083665a38,
         type: 3}
@@ -8434,7 +8454,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 287046628}
   m_HandleRect: {fileID: 1111835995}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.1
   m_MaxValue: 11
   m_WholeNumbers: 0
   m_Value: 0

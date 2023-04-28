@@ -35,7 +35,7 @@ public class Particle_Controller : MonoBehaviour
 
     //Helper variables
     float wetnessRate;
-    public float wetnessThreshold; //fully submerged 11.0f, partially 2.83 > x < 11.0f
+    public float wetnessThreshold = 0.1f; //fully submerged 11.0f, partially 2.83 > x < 11.0f
 
     public enum weatherParticleIntensity
     {
@@ -76,6 +76,19 @@ public class Particle_Controller : MonoBehaviour
         constantVal = 1.0f;
     }
 
+    public void resetEffects()
+    {
+        for (int i = 0; i < wetnessMaterials.Length; i++)
+        {
+            wetnessMaterials[i].SetFloat("_Wetness", 0.0f);
+        }
+
+        for (int i = 0; i < snowyMaterials.Length; i++)
+        {
+            snowyMaterials[i].SetFloat("_Snow_Amount", 0.0f);
+        }
+    }
+
     public void weatherChange(int index)
     {
         if (index == 0)
@@ -89,18 +102,7 @@ public class Particle_Controller : MonoBehaviour
         }
     }
 
-    public void resetEffects()
-    {
-        for (int i = 0; i < wetnessMaterials.Length; i++)
-        {
-            wetnessMaterials[i].SetFloat("_Wetness", 0.0f);
-        }
-
-        for (int i = 0; i < snowyMaterials.Length; i++)
-        {
-            snowyMaterials[i].SetFloat("_Snow_Amount", 0.0f);
-        }
-    }
+   
 
     public void weatherIntensityCheck(int level)
     {
@@ -214,10 +216,16 @@ public class Particle_Controller : MonoBehaviour
                         wetnessAmount = wetnessAmount += wetnessRate * Time.deltaTime;//(Time.time / 50.0f) % 1.2f;
                         wetnessMaterials[i].SetFloat("_Wetness", wetnessAmount);
 
-                        if (wetnessMaterials[i].GetFloat("_Wetness") > wetnessThreshold)
+                        if (wetnessMaterials[i].GetFloat("_Wetness") >= wetnessThreshold)
                         {
                             wetnessRate = 0.0f;
                         }
+                        else if (wetnessMaterials[i].GetFloat("_Wetness") < wetnessThreshold)
+                        {
+                            wetnessRate = 0.1f;
+                        }
+
+                        Debug.Log(wetnessRate);
                     }
                     
                 }

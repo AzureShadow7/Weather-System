@@ -99,8 +99,8 @@ public class OnScreenControls : MonoBehaviour
 
             wetnessVolumeSlider.onValueChanged.AddListener((limit) =>
             {
-                //strength = limit;
-                mat.SetFloat("_Wetness_Volume", limit);
+                strength = limit;
+                mat.SetFloat("_Wetness_Volume", strength);
             });
 
             //Debug.Log("Strength " + strength);
